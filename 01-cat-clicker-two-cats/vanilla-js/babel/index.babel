@@ -1,0 +1,47 @@
+console.clear();
+
+(function() {
+  
+  // Set up initial cat data
+  const catsData = [
+    { 
+      id: 0, name: 'Kitty', clickCount: 0,
+      imageUrl: 'https://placekitten.com/200/300' 
+    },       
+    { 
+      id: 1, name: 'Bella', clickCount: 0, 
+      imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
+    }
+  ];
+  
+  // Select root element
+  const rootElement = document.getElementById('root-element');
+  
+  // Set up DOM
+  catsData.forEach((cat, index) => {
+    let catWrapperElement = document.createElement('div');
+    let catNameElement = document.createElement('h3');
+    let catImageElement = document.createElement('img');
+    let clickCounterElement = document.createElement('h3');
+    
+    catWrapperElement.className = 'cat-wrapper';    
+    catNameElement.className = 'cat-name';
+    catImageElement.className = 'cat-image';
+    clickCounterElement.className = 'click-counter';
+    
+    catNameElement.textContent = catsData[index].name;
+    catImageElement.src = catsData[index].imageUrl
+    
+    catImageElement.addEventListener('click', () => {
+      catsData[index] = { ...catsData[index], clickCount: ++catsData[index].clickCount};
+      clickCounterElement.textContent = catsData[index].clickCount;
+    }, false);
+    
+    catWrapperElement.appendChild(catNameElement);
+    catWrapperElement.appendChild(catImageElement);
+    catWrapperElement.appendChild(clickCounterElement);
+     
+    rootElement.appendChild(catWrapperElement);
+  }); 
+  
+}());

@@ -1,0 +1,60 @@
+console.clear();
+
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      catsData: [
+        { 
+          id: 0, name: 'Kitty', clickCount: 0,
+          imageUrl: 'https://placekitten.com/200/300' 
+        },       
+        { 
+          id: 1, name: 'Bella', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
+        }
+      ]
+    };
+  }
+  
+  handleClick(event) {
+    const clickedId = Number(event.target.id);
+    
+    this.setState({
+      catsData: [
+        ...this.state.catsData.slice(0, clickedId),
+        { ...this.state.catsData[clickedId], 
+          clickCount: this.state.catsData[clickedId].clickCount + 1},        
+        ...this.state.catsData.slice(clickedId + 1)
+      ]
+    });
+  }
+  
+  render() {  
+    const renderCats = this.state.catsData.map((cat, index) => {
+      return (
+        <div key={index} className="cat-wrapper">
+          <h3 className="cat-name" >{cat.name}</h3>
+          <img className="cat-image" 
+               src={cat.imageUrl} 
+               id={index}
+               onClick={this.handleClick} />
+          <h3 className="cat-counter" >{cat.clickCount}</h3>
+        </div>   
+      );
+    });
+    
+    return (
+      <div className="cats-container">
+        {renderCats}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('app')
+);

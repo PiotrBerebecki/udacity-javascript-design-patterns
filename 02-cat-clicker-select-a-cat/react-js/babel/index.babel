@@ -1,0 +1,128 @@
+console.clear();
+
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.handleCatClick = this.handleCatClick.bind(this);
+    this.handleCatSelection = this.handleCatSelection.bind(this);
+    this.state = {
+      currentlyDisplayedCat: 0,
+      catsData: [
+        { 
+          id: 0, name: 'Kitty', clickCount: 0,
+          imageUrl: 'https://placekitten.com/200/300' 
+        },       
+        { 
+          id: 1, name: 'Bella', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
+        },
+        { 
+          id: 2, name: 'Max', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-6.jpg' 
+        },
+        { 
+          id: 3, name: 'Sofia', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-10.jpg' 
+        },
+        { 
+          id: 4, name: 'Clark', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-1.jpg'
+        }        
+      ]
+    };
+  }
+
+  handleCatSelection(index) {
+    this.setState({
+      currentlyDisplayedCat: Number(index)
+    });
+  }
+  
+  handleCatClick(id) {   
+    const clickedId = Number(id);
+    
+    this.setState({
+      catsData: [
+        ...this.state.catsData.slice(0, clickedId),
+        { ...this.state.catsData[clickedId], 
+          clickCount: this.state.catsData[clickedId].clickCount + 1},        
+        ...this.state.catsData.slice(clickedId + 1)
+      ]
+    });
+    
+  }
+  
+  render() {     
+    return (
+      <div>
+        <CatSelectionForm catsData={this.state.catsData}
+                          onCatSelection={this.handleCatSelection} />
+       
+        <div className="cat-display-area-container">
+          <CatDisplayArea catData={this.state.catsData[this.state.currentlyDisplayedCat]}
+                          onCatClick={this.handleCatClick} />     
+        </div>
+      </div>
+    );
+  }
+}
+
+class CatSelectionForm extends React.Component {
+  constructor() {
+    super();
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
+  handleChange(e) {
+    console.log(e.target)
+    this.props.onCatSelection(e.target.value)
+  }
+  
+  render() {
+    const renderOptions = this.props.catsData.map((cat,index) => {
+      return (
+        <option key={index} value={index}>{cat.name}</option>
+      );
+    })
+    
+    return (
+      <select onChange={this.handleChange}>
+        {renderOptions}
+      </select>
+    );
+  }
+}
+
+
+class CatDisplayArea extends React.Component {
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+  }
+  
+  handleClick(event) {
+    this.props.onCatClick(event.target.id);
+  }
+  
+  render() {
+    const { catData } = this.props;
+    
+    return (
+      <div>
+        <h3 className="cat-name" >{catData.name}</h3>
+        <img className="cat-image" 
+          src={catData.imageUrl} 
+          id={catData.id}
+          onClick={this.handleClick} />
+        <h3 className="cat-counter" >{catData.clickCount}</h3>
+      </div>
+    );
+  }
+}
+
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('app')
+);

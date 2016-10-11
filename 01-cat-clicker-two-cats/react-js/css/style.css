@@ -1,0 +1,22 @@
+html, body {
+  margin: 0;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 1.2em;
+}
+
+.cats-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+h3 {
+  text-align: center;
+  min-height: 1.2em;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
