@@ -1,0 +1,111 @@
+console.clear();
+
+(function() {
+  
+  const model = {
+    init: function() {
+      this.currentlyDisplayedCat = 0;
+      this.catsData = [
+        { 
+          id: 0, name: 'Kitty', clickCount: 0,
+          imageUrl: 'https://placekitten.com/200/300' 
+        },       
+        { 
+          id: 1, name: 'Oliver', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
+        },
+        { 
+          id: 2, name: 'Max', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-6.jpg' 
+        },
+        { 
+          id: 3, name: 'Bella', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-10.jpg' 
+        },
+        { 
+          id: 4, name: 'Oscar', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-1.jpg'
+        }
+      ];  
+    }
+  };
+  
+  
+  const controller = {
+    init: function() {
+      model.init();
+      view.initCatSelector();
+      view.initCatDisplay();
+    },
+    
+    updateCurrentlyDisplayedCat: function(event) {
+      model.currentlyDisplayedCat = Number(event.target.value);
+    },
+    
+    addOneClick: function() {
+      model.catsData[model.currentlyDisplayedCat].clickCount = 
+        model.catsData[model.currentlyDisplayedCat].clickCount + 1;
+    }
+  };
+  
+
+  const view = {
+    initCatSelector: function() {
+      this.rootElement = document.getElementById('root-element');
+      const selectElement = document.createElement('select');
+      
+      selectElement.addEventListener('change', (event) => {
+        controller.updateCurrentlyDisplayedCat(event);
+        this.renderCatDisplay();
+      });
+      
+      model.catsData.forEach((cat, index) => {
+        let optionElement = document.createElement('option');
+        optionElement.textContent = cat.name;
+        optionElement.value = index;
+        selectElement.appendChild(optionElement);
+      });
+      
+      this.rootElement.appendChild(selectElement);
+    },
+ 
+    initCatDisplay: function() {
+      const catWrapperElement = document.createElement('div');
+      this.catNameElement = document.createElement('h3');   
+      this.catImageElement = document.createElement('img');
+      this.clickCounterElement = document.createElement('h3');
+      
+      catWrapperElement.className = 'cat-wrapper';    
+      this.catNameElement.className = 'cat-name';
+      this.catImageElement.className = 'cat-image';
+      this.clickCounterElement.className = 'click-counter'; 
+      
+      this.catImageElement.addEventListener('click', () => {
+        controller.addOneClick();
+        this.clickCounterElement.textContent = 
+          model.catsData[model.currentlyDisplayedCat].clickCount + ' clicks';
+      });
+      
+      catWrapperElement.appendChild(this.catNameElement);
+      catWrapperElement.appendChild(this.catImageElement);
+      catWrapperElement.appendChild(this.clickCounterElement);
+
+      this.rootElement.appendChild(catWrapperElement);
+      
+      this.renderCatDisplay();
+    },
+    
+    renderCatDisplay: function() {      
+      this.catNameElement.textContent = model.catsData[model.currentlyDisplayedCat].name;
+      this.catImageElement.src = model.catsData[model.currentlyDisplayedCat].imageUrl;
+      this.clickCounterElement.textContent = 
+        model.catsData[model.currentlyDisplayedCat].clickCount === 0 ? 
+                                                          'Click me' :
+               model.catsData[model.currentlyDisplayedCat].clickCount;
+    }
+  };
+  
+  
+  controller.init();
+ 
+}());

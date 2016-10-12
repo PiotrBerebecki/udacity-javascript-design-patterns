@@ -1,0 +1,61 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900;
+}
+
+body {
+    font-family: Roboto, Arial, sans-serif;
+}
+
+.new-note-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.new-note-content {
+    width: 95%;
+    font-size: 1.3em;
+}
+
+.notes-wrapper {
+    display: flex;
+    margin: 0 auto;
+    width: 96.7%;
+}
+
+.notes {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    list-style-type: none;
+}
+
+.note {
+    width: 100%;
+    list-style-type: none;
+    background-color: #ddd;
+    padding: 1em;
+    border: solid 6px white;
+}
+
+@media screen and (min-width: 769px) {
+    .note {
+        width: 33.33%;
+    }
+    .notes-wrapper {
+        width: 95.6%;
+    }
+}
+
+.note-date {
+    font-size:0.8em;
+}
