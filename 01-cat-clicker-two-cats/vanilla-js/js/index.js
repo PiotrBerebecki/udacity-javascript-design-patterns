@@ -11,7 +11,7 @@ console.clear();
     id: 0, name: 'Kitty', clickCount: 0,
     imageUrl: 'https://placekitten.com/200/300'
   }, {
-    id: 1, name: 'Bella', clickCount: 0,
+    id: 1, name: 'Oliver', clickCount: 0,
     imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg'
   }];
 

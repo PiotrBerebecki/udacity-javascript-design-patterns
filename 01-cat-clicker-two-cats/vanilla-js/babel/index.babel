@@ -9,7 +9,7 @@ console.clear();
       imageUrl: 'https://placekitten.com/200/300' 
     },       
     { 
-      id: 1, name: 'Bella', clickCount: 0, 
+      id: 1, name: 'Oliver', clickCount: 0, 
       imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
     }
   ];
@@ -30,7 +30,7 @@ console.clear();
     clickCounterElement.className = 'click-counter';
     
     catNameElement.textContent = catsData[index].name;
-    catImageElement.src = catsData[index].imageUrl
+    catImageElement.src = catsData[index].imageUrl;
     
     catImageElement.addEventListener('click', () => {
       catsData[index] = { ...catsData[index], clickCount: ++catsData[index].clickCount};
