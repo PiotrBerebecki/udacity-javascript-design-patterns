@@ -1,0 +1,220 @@
+console.clear();
+
+(function() {
+  
+  /* ======== Model ======== */
+  
+  const model = {
+    init: function() {
+      this.currentlyDisplayedCat = 0;
+      this.catsData = [
+        { 
+          id: 0, name: 'Kitty', clickCount: 0,
+          imageUrl: 'https://placekitten.com/200/300' 
+        },       
+        { 
+          id: 1, name: 'Oliver', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-8.jpg' 
+        },
+        { 
+          id: 2, name: 'Max', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-6.jpg' 
+        },
+        { 
+          id: 3, name: 'Bella', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-10.jpg' 
+        },
+        { 
+          id: 4, name: 'Oscar', clickCount: 0, 
+          imageUrl: 'http://lorempixel.com/output/cats-h-c-200-300-1.jpg'
+        }
+      ];  
+    }
+  };
+  
+  
+  /* ======== Controller ======== */
+  
+  const controller = {
+    init: function() {
+      model.init();
+      view.initCatSelector();
+      view.initCatDisplay();
+      view.initAdmin();
+    },
+    
+    updateCurrentlyDisplayedCat: function(event) {
+      model.currentlyDisplayedCat = Number(event.target.value);
+    },
+    
+    addOneClick: function() {
+      model.catsData[model.currentlyDisplayedCat].clickCount++;
+    },
+    
+    updateCatData: function(name, imageUrl, clickCount) {
+      model.catsData[model.currentlyDisplayedCat] = {name, imageUrl, clickCount};
+      view.renderCatDisplay();
+      view.updateNameInOptionSelection(name);
+    }
+  };
+  
+  
+  /* ======== View ======== */
+
+  const view = {
+    initCatSelector: function() {
+      this.rootElement = document.getElementById('root-element');
+      const selectElement = document.createElement('select');
+      
+      selectElement.addEventListener('change', (event) => {
+        controller.updateCurrentlyDisplayedCat(event);
+        this.renderCatDisplay();
+        this.prefillAdminForm();
+      });
+      
+      model.catsData.forEach((cat, index) => {
+        let optionElement = document.createElement('option');
+        optionElement.textContent = cat.name;
+        optionElement.value = index;
+        selectElement.appendChild(optionElement);
+      });
+      
+      this.rootElement.appendChild(selectElement);
+    },
+    
+    updateNameInOptionSelection: function(name) {
+      const currentSelection = document.getElementsByTagName('select')[0].childNodes[model.currentlyDisplayedCat];
+      currentSelection.textContent = name;
+    },
+
+    initCatDisplay: function() {
+      const catWrapperElement = document.createElement('div');
+      this.catNameElement = document.createElement('h3');   
+      this.catImageElement = document.createElement('img');
+      this.clickCounterElement = document.createElement('h3');
+      
+      catWrapperElement.className = 'cat-wrapper';    
+      this.catNameElement.className = 'cat-name';
+      this.catImageElement.className = 'cat-image';
+      this.clickCounterElement.className = 'click-counter'; 
+      
+      this.catImageElement.addEventListener('click', (event) => {
+        controller.addOneClick();
+        this.renderClickCount();
+        this.prefillAdminForm('imageWasClicked');
+      });
+      
+      catWrapperElement.appendChild(this.catNameElement);
+      catWrapperElement.appendChild(this.catImageElement);
+      catWrapperElement.appendChild(this.clickCounterElement);
+
+      this.rootElement.appendChild(catWrapperElement);
+      
+      this.renderCatDisplay();
+    },
+    
+    renderCatDisplay: function() {      
+      this.catNameElement.textContent = model.catsData[model.currentlyDisplayedCat].name;
+      this.catImageElement.src = model.catsData[model.currentlyDisplayedCat].imageUrl;
+      this.renderClickCount();
+    },
+    
+    renderClickCount: function() {
+      this.clickCounterElement.textContent = 
+        model.catsData[model.currentlyDisplayedCat].clickCount == 0 ? 
+                                                         'Click me' :
+          model.catsData[model.currentlyDisplayedCat].clickCount + ' clicks';
+    },
+    
+    initAdmin: function() {
+      // Keep track whether the admin form is shown
+      this.isAdminFormShown = false;
+      
+      // Admin button
+      const adminButtonElement = document.createElement('button');
+      adminButtonElement.textContent = 'Admin';
+      this.rootElement.appendChild(adminButtonElement);
+      
+      // Show or hide admin form
+      adminButtonElement.addEventListener('click', () => {
+        this.isAdminFormShown = !this.isAdminFormShown;
+        this.showAdminForm();
+      });
+      
+      // Admin form
+      const adminFormWrapper = document.createElement('div');
+      adminFormWrapper.className = 'admin-form-wrapper';
+      
+      this.adminForm = document.createElement('form');
+     
+      
+      const adminNameLabel = document.createElement('label');
+      const adminImageUrlLabel = document.createElement('label');
+      const adminClickCountLabel = document.createElement('label');
+      
+      this.adminNameInput = document.createElement('input');
+      this.adminImageUrlInput = document.createElement('input');
+      this.adminClickCountInput = document.createElement('input');
+
+      adminNameLabel.textContent = 'Name';
+      adminImageUrlLabel.textContent = 'Image URL';
+      adminClickCountLabel.textContent = 'Number of clicks';
+      
+      this.adminNameInput.name = 'name';
+      this.adminImageUrlInput.name = 'imageUrl';
+      this.adminClickCountInput.name = 'clickCount';
+
+      this.adminForm.appendChild(adminNameLabel);
+      this.adminForm.appendChild(this.adminNameInput);
+      
+      this.adminForm.appendChild(adminImageUrlLabel);  
+      this.adminForm.appendChild(this.adminImageUrlInput);
+      
+      this.adminForm.appendChild(adminClickCountLabel);
+      this.adminForm.appendChild(this.adminClickCountInput);
+      
+      this.adminFormSubmit = document.createElement('input');
+      this.adminFormSubmit.type = 'submit';
+      this.adminFormSubmit.value = 'Save';
+      this.adminForm.appendChild(this.adminFormSubmit);
+      
+      this.adminForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let name = e.target.name.value;
+        let imageUrl = e.target.imageUrl.value;
+        let clickCount = e.target.clickCount.value;
+        
+        if (name && clickCount && imageUrl && !isNaN(clickCount) && 
+                       Math.floor(clickCount) == Math.abs(clickCount)) {
+          controller.updateCatData(name, imageUrl, clickCount);
+        } else {
+          alert('Please enter valid values')
+        }
+      });
+      
+      adminFormWrapper.appendChild(this.adminForm)      
+      this.rootElement.appendChild(adminFormWrapper);
+      this.showAdminForm();
+    },
+    
+    showAdminForm: function() {
+      if (this.isAdminFormShown) {
+        this.adminForm.className = 'admin-form';
+        this.prefillAdminForm();
+      } else {
+        this.adminForm.className = 'hide';
+      }
+    },
+    
+    prefillAdminForm: function(eventType) {
+      if (eventType !== 'imageWasClicked') {
+        this.adminNameInput.value = model.catsData[model.currentlyDisplayedCat].name;
+        this.adminImageUrlInput.value = model.catsData[model.currentlyDisplayedCat].imageUrl;
+      }
+      this.adminClickCountInput.value = model.catsData[model.currentlyDisplayedCat].clickCount;
+    }
+  };
+  
+  controller.init();
+ 
+}());

@@ -4,6 +4,8 @@ console.clear();
 
 (function () {
 
+  /* ======== Model ======== */
+
   var model = {
     init: function init() {
       this.currentlyDisplayedCat = 0;
@@ -26,6 +28,8 @@ console.clear();
     }
   };
 
+  /* ======== Controller ======== */
+
   var controller = {
     init: function init() {
       model.init();
@@ -38,9 +42,11 @@ console.clear();
     },
 
     addOneClick: function addOneClick() {
-      model.catsData[model.currentlyDisplayedCat].clickCount = model.catsData[model.currentlyDisplayedCat].clickCount + 1;
+      model.catsData[model.currentlyDisplayedCat].clickCount++;
     }
   };
+
+  /* ======== View ======== */
 
   var view = {
     initCatSelector: function initCatSelector() {
@@ -79,7 +85,7 @@ console.clear();
 
       this.catImageElement.addEventListener('click', function () {
         controller.addOneClick();
-        _this2.clickCounterElement.textContent = model.catsData[model.currentlyDisplayedCat].clickCount + ' clicks';
+        _this2.renderClickCount();
       });
 
       catWrapperElement.appendChild(this.catNameElement);
@@ -94,7 +100,11 @@ console.clear();
     renderCatDisplay: function renderCatDisplay() {
       this.catNameElement.textContent = model.catsData[model.currentlyDisplayedCat].name;
       this.catImageElement.src = model.catsData[model.currentlyDisplayedCat].imageUrl;
-      this.clickCounterElement.textContent = model.catsData[model.currentlyDisplayedCat].clickCount === 0 ? 'Click me' : model.catsData[model.currentlyDisplayedCat].clickCount;
+      this.renderClickCount();
+    },
+
+    renderClickCount: function renderClickCount() {
+      this.clickCounterElement.textContent = model.catsData[model.currentlyDisplayedCat].clickCount === 0 ? 'Click me' : model.catsData[model.currentlyDisplayedCat].clickCount + ' clicks';
     }
   };
 
