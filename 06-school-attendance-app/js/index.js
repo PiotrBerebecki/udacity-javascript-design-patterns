@@ -33,13 +33,14 @@
   }
 })();
 
+
 /* STUDENT APPLICATION */
 $(function () {
   var attendance = JSON.parse(localStorage.attendance),
     $allMissed = $('tbody .missed-col'),
     $allCheckboxes = $('tbody input');
 
-      // Count a student's missed days
+  // Count a student's missed days
   function countMissing() {
     $allMissed.each(function () {
       var studentRow = $(this).parent('tr'),
@@ -56,7 +57,7 @@ $(function () {
     });
   }
 
-    // Check boxes, based on attendace records
+// Check boxes, based on attendace records
   $.each(attendance, function (name, days) {
     var studentRow = $('tbody .name-col:contains("' + name + '")').parent('tr'),
       dayChecks = $(studentRow).children('.attend-col').children('input');
@@ -66,7 +67,7 @@ $(function () {
     });
   });
 
-    // When a checkbox is clicked, update localStorage
+  // When a checkbox is clicked, update localStorage
   $allCheckboxes.on('click', function () {
     var studentRows = $('tbody .student'),
       newAttendance = {};
