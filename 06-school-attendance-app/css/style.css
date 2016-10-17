@@ -1,34 +1,57 @@
 body {
-    line-height: 1.6;
-    margin: 2em;
+  line-height: 1.6;
+  margin: 0em;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    font-size: calc(40% + 1vw);
+  }
+}
+
+.container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 th {
-    background-color: #001f3f;
-    color: #fff;
-    padding: 0.5em 1em;
+  background-color: #001f3f;
+  color: #fff;
+  padding: 0.5em 1em;
 }
 
 td {
-    border-top: 1px solid #eee;
-    padding: 0.5em 1em;
+  border-top: 1px solid #eee;
+  padding: 0.5em 1em;
+  text-align: center;
 }
 
 input {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Column types */
+.name-col {
+  text-align: left;
+}
+
 th.missed-col {
-    background-color: #f00;
+  background-color: #f00;
 }
 
 td.missed-col {
-    background-color: #ffecec;
-    color: #f00;
-    text-align: center;
-}
-
-.name-col {
-    text-align: left;
+  background-color: #ffecec;
+  color: #f00;
 }
